@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 var cors = require('cors')
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 // import { MongoClient } from "mongodb";
 const port = process.env.PORT || 3000 ;
 app.use(cors())
@@ -22,6 +22,15 @@ async function run() {
           const services = await cursor.toArray();
           res.send(services);
       })
+      //Single API
+      app.get('/services/:id' , async(req,res) =>{
+        const id = req.params.id
+        const quary ={_id:ObjectId(id)};
+        const user =await serviceCollection.findOne(quary);
+        res.send(user);
+      })
+
+
     //   Post API
      app.post('/services', async(req,res) =>{
          const netUser =req.body;
